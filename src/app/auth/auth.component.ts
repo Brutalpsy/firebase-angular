@@ -5,7 +5,8 @@ import { AuthService, AuthResonseData } from './auth.service';
 import { User } from './user.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, of, concat, interval, merge } from 'rxjs';
+import { concatMap, tap, map, take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-auth',
@@ -25,25 +26,17 @@ export class AuthComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.loginForm = new FormGroup({
-    //   email: new FormControl(null, { validators: [Validators.required, Validators.email, dummyValidator], updateOn: 'blur' }),
-    //   password: new FormControl('', [Validators.required, Validators.minLength(6)])
-    // });
 
     this.loginForm = this.formBuilder.group({
-      email: [null, { validators: [Validators.required, Validators.email, dummyValidator], updateOn: 'blur' }]
+      email: [null, { validators: [Validators.required, Validators.email], updateOn: 'blur' }]
       , password: [null, [Validators.required, Validators.minLength(6)]]
     });
-
-
-    // this.loginForm.get('email').valueChanges.subscribe(x => {
-    //   console.log('changed');
-    //   setTimeout(() => {
-    //     this.loginForm.get('email').disable({ emitEvent: false });
-    //   }, 1000);
-    // });
   }
 
+  private consolLoguj(data) {
+
+    console.log(data);
+  }
 
   onSubmit() {
     if (!this.loginForm.valid) {
@@ -87,7 +80,7 @@ export class AuthComponent implements OnInit {
     this.isLoginMode = !this.isLoginMode;
   }
 }
-function dummyValidator(control: FormControl) {
-  console.log('checking...');
-  return null;
-}
+// function dummyValidator(control: FormControl) {
+//   console.log('checking...');
+//   return null;
+// }
